@@ -1,5 +1,6 @@
 {
   "name": "simple-nodejs-app",
+  "type": "module",
   "version": "1.0.0",
   "description": "Research about a person",
   "main": "index.js",
@@ -7,16 +8,10 @@
     "start": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/rat9615/simple-nodejs-app.git"
-  },
+ 
   "author": "Olia",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/rat9615/simple-nodejs-app/issues"
-  },
-  "homepage": "https://github.com/rat9615/simple-nodejs-app#readme",
+  
   "dependencies": {
     "express": "^4.17.1",
     "node-fetch": "^2.6.7",
