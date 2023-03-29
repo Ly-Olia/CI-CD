@@ -5,6 +5,12 @@ on:
   push:
     branches:
       - main
+
+env:
+  DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
+  DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+  PRODUCT_REPO_NAME: ${{secrets.PRODUCT_REPO_NAME}}
+
 jobs:
   run-linters:
     permissions: write-all
@@ -30,18 +36,19 @@ jobs:
           eslint: true
           prettier: true
 
-      - name: "Dockerize"
-        description: "Greet someone and record the time"
-        inputs:
-          who-to-greet: # id of input
-            description: "Who to greet"
-            required: true
-            default: "World"
-        outputs:
-          time: # id of output
-            description: "The time we greeted you"
-        runs:
-          using: "docker"
-          image: "Dockerfile"
-          args:
-            - ${{ inputs.who-to-greet }}
+  create-user-image:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Work Dir
+        run: |
+          echo $DOCKER_USERNAME
+          echo $DOCKER_PASSWORD
+          echo $PRODUCT_REPO_NAME
+      - name: Docker login
+        run: |
+          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+      - name: Build user service docker image
+        run: docker build . --file Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_NAME:latest"
+      - name: Push user service docker image
+        run: docker push "$DOCKER_USERNAME/$PRODUCT_REPO_NAME:latest"
